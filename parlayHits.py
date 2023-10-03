@@ -10,7 +10,6 @@ playerHits = {} # Dictionary to store all players and stats
 print(allFiles)
 
 def populateDict(allFiles, playerHits):
-	print("TEST")
 	# Open the Workbook
 	for name in range(len(allFiles)):
 		player = xlrd.open_workbook(allFiles[name])
@@ -28,7 +27,13 @@ def populateDict(allFiles, playerHits):
 			datesAndHits[stats.cell_value(row, 3)] = stats.cell_value(row, 12)
 		playerHits[allFiles[name]] = datesAndHits
 		#print(datesAndHits)
-	print(playerHits)
+	print(playerHits.items())
+	return(playerHits)
+	# Call next function with playerHits
+	# pullSameDate(playerHits)
+
+def pullSameDate(playerHits):
+	print("")
 
 if __name__=="__main__":
 	populateDict(allFiles, playerHits)
