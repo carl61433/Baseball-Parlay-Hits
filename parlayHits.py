@@ -32,7 +32,10 @@ def populateDict(allFiles, playerHits):
 	# Call next function with playerHits
 	# pullSameDate(playerHits)
 
-def pullSameDate(playerHits):
+def pullSameDate(playerHits, allFiles):
+	currentDate = [] # Variable for storing current date of iteration
+	for keys in range(allFiles):
+		
 	print("")
 
 if __name__=="__main__":
