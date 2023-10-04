@@ -1,6 +1,7 @@
 # Import the xlrd module
 import xlrd
 import os
+import datetime
 
 # Set CWD to the Players folder with the stats
 os.chdir('Players/')
@@ -27,16 +28,23 @@ def populateDict(allFiles, playerHits):
 			datesAndHits[stats.cell_value(row, 3)] = stats.cell_value(row, 12)
 		playerHits[allFiles[name]] = datesAndHits
 		#print(datesAndHits)
-	print(playerHits.items())
-	return(playerHits)
+	#print(playerHits.items())
 	# Call next function with playerHits
-	# pullSameDate(playerHits)
+	#pullSameDate(playerHits, allFiles)
 
 def pullSameDate(playerHits, allFiles):
+	# Can use datetime module to iterate through every day of the season
+		# which will just have to be set for whichever season
+		# Or maybe one day, prompt for the season and players, fetch the start and end dates,
+		# then do magic
 	currentDate = [] # Variable for storing current date of iteration
-	for keys in range(allFiles):
-		
-	print("")
+	valueLength = [] # Variable for storing the length of each stat dictionary
+	key = 1
+	#compareDict = {} # Use this dictionary to store each date as a key, and a list of hits on
+		# that date as the value?
+	for key in range(len(allFiles)): # Not necessary??
+		valueLength = len(playerHits[key].keys()[key]) 
+	print(valueLength)
 
 if __name__=="__main__":
 	populateDict(allFiles, playerHits)
