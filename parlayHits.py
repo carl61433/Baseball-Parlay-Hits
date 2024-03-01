@@ -6,47 +6,60 @@ import datetime
 # Set CWD to the Players folder with the stats
 os.chdir('Players/')
 # Import all file names in the Workbooks dir
-allFiles = os.listdir()
-playerHits = {} # Dictionary to store all players and stats
-print(allFiles)
+allFiles = [f for f in os.listdir('.') if os.path.isfile(f)] #Only get files, not folders
+#print(allFiles)
+dateDictionary = {} #Dictionary to track hits per day
+# Open the Workbooks
+player1 = xlrd.open_workbook(allFiles[0])
+player2 = xlrd.open_workbook(allFiles[1])
+stats1 = player1.sheet_by_index(0) #Open the worksheet
+stats2 = player2.sheet_by_index(0) #Open the worksheet
 
-def populateDict(allFiles, playerHits):
-	# Open the Workbook
-	for name in range(len(allFiles)):
-		player = xlrd.open_workbook(allFiles[name])
+def populateDict():
+	seasonDay = datetime.date(2023, 3, 30) #Current day of the season
+	seasonEnd = datetime.date(2023, 4, 2) #Last day of the season
+	while seasonDay <= seasonEnd:
+		playerIteration(seasonDay) #Pass the current date to
+		#player iteration for checking hits, if there was a game
+		seasonDay += datetime.timedelta(days=1) #Next day
+	print(dateDictionary)
 
-		# Open the worksheet
-		stats = player.sheet_by_index(0)
+def playerIteration(date):
+	date = date.strftime("%b %d") #Modifies the date to XXX ## format used in the data
+	dateDictionary.update({date:['','']}) #Add the key to the dictionary,
+		#with a blank list as the value
+	row = 1 #Skip the header, row 0
+	while row < 5: #Iterate the rows and columns
+		if date == stats1.cell_value(row, 3): #If the current season day is in this row,
+			#set the value of the date key to the number of hits
+			if stats1.cell_value(row, 12) > 0:
+				dateDictionary[date][0] = "yes"
+				break
+			else:
+				dateDictionary[date][0] = "no"
+				break
+		else:
+			dateDictionary[date][0] = "NG"
+		row = row + 1
+	row = 1 #Reset row for second loop. Skip the header, row 0
+	while row < 5:
+		if date == stats2.cell_value(row, 3): #If the current season day is in this row,
+			#set the value of the date key to the number of hits
+			if stats2.cell_value(row, 12) > 0:
+				dateDictionary[date][1] = "yes"
+				break
+			else:
+				dateDictionary[date][1] = "no"
+				break
+		else:
+			dateDictionary[date][1] = "NG"
+		row = row + 1
 
-		# Define the dictionary
-		datesAndHits = {}
-
-		# Iterate the rows and columns
-		for row in range(stats.nrows): # Need to check for proper date format, and remove headers
-			if row == 0: # Used to skip the first row of headers
-				row = row + 1
-			datesAndHits[stats.cell_value(row, 3)] = stats.cell_value(row, 12)
-		playerHits[allFiles[name]] = datesAndHits
-		#print(datesAndHits)
-	#print(playerHits.items())
-	# Call next function with playerHits
-	#pullSameDate(playerHits, allFiles)
-
-def pullSameDate(playerHits, allFiles):
-	# Can use datetime module to iterate through every day of the season
-		# which will just have to be set for whichever season
-		# Or maybe one day, prompt for the season and players, fetch the start and end dates,
-		# then do magic
-	currentDate = [] # Variable for storing current date of iteration
-	valueLength = [] # Variable for storing the length of each stat dictionary
-	key = 1
-	#compareDict = {} # Use this dictionary to store each date as a key, and a list of hits on
-		# that date as the value?
-	for key in range(len(allFiles)): # Not necessary??
-		valueLength = len(playerHits[key].keys()[key]) 
-	print(valueLength)
+def playerHadHit():
+	print("")
+	#stuff
 
 if __name__=="__main__":
-	populateDict(allFiles, playerHits)
-
-# Eventually need to compare all six players using the matching date from each dict
+	#playerIteration(allFiles)
+	populateDict()
+	# Eventually need to compare all six players using the matching date from each dict
