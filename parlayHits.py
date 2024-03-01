@@ -25,19 +25,18 @@ def populateDict():
 	print(dateDictionary)
 
 def playerIteration(date):
-	date = date.strftime("%b %d") #Modifies the date to XXX ## format used in the data
+	date = date.strftime("%b %-d") #Modifies the date to XXX ## format used in the data
 	dateDictionary.update({date:['','']}) #Add the key to the dictionary,
 		#with a blank list as the value
 	row = 1 #Skip the header, row 0
-	while row < 5: #Iterate the rows and columns
+	while row < 9: #Iterate the rows and columns
 		if date == stats1.cell_value(row, 3): #If the current season day is in this row,
 			#set the value of the date key to the number of hits
 			if stats1.cell_value(row, 12) > 0:
 				dateDictionary[date][0] = "yes"
-				break
 			else:
 				dateDictionary[date][0] = "no"
-				break
+			break
 		else:
 			dateDictionary[date][0] = "NG"
 		row = row + 1
@@ -47,10 +46,9 @@ def playerIteration(date):
 			#set the value of the date key to the number of hits
 			if stats2.cell_value(row, 12) > 0:
 				dateDictionary[date][1] = "yes"
-				break
 			else:
 				dateDictionary[date][1] = "no"
-				break
+			break
 		else:
 			dateDictionary[date][1] = "NG"
 		row = row + 1
