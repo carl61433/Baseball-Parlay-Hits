@@ -22,7 +22,8 @@ def populateDict():
 		playerIteration(seasonDay) #Pass the current date to
 		#player iteration for checking hits, if there was a game
 		seasonDay += datetime.timedelta(days=1) #Next day
-	print(dateDictionary)
+	#print(dateDictionary)
+	numberOfDays(dateDictionary)
 
 def playerIteration(date):
 	date = date.strftime("%b %-d") #Modifies the date to XXX ## format used in the data
@@ -53,8 +54,12 @@ def playerIteration(date):
 			dateDictionary[date][1] = "NG"
 		row = row + 1
 
-def playerHadHit():
-	print("")
+def numberOfDays(dateDictionary): #The number of times that this occurred in the season.
+	counter = 0
+	for i in dateDictionary:
+		if dateDictionary[i][0] == "yes" and dateDictionary[i][1] == "yes":
+			counter = counter + 1
+	print("This has occurred " + str(counter) + " times this season.")
 	#stuff
 
 if __name__=="__main__":
