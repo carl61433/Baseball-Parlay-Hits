@@ -17,7 +17,7 @@ stats2 = player2.sheet_by_index(0) #Open the worksheet
 
 def populateDict():
 	seasonDay = datetime.date(2023, 3, 30) #Current day of the season
-	seasonEnd = datetime.date(2023, 4, 2) #Last day of the season
+	seasonEnd = datetime.date(2023, 9, 28) #Last day of the season
 	while seasonDay <= seasonEnd:
 		playerIteration(seasonDay) #Pass the current date to
 		#player iteration for checking hits, if there was a game
@@ -29,7 +29,7 @@ def playerIteration(date):
 	dateDictionary.update({date:['','']}) #Add the key to the dictionary,
 		#with a blank list as the value
 	row = 1 #Skip the header, row 0
-	while row < 9: #Iterate the rows and columns
+	while row < 163: #Iterate the rows and columns
 		if date == stats1.cell_value(row, 3): #If the current season day is in this row,
 			#set the value of the date key to the number of hits
 			if stats1.cell_value(row, 12) > 0:
@@ -41,7 +41,7 @@ def playerIteration(date):
 			dateDictionary[date][0] = "NG"
 		row = row + 1
 	row = 1 #Reset row for second loop. Skip the header, row 0
-	while row < 5:
+	while row < 163:
 		if date == stats2.cell_value(row, 3): #If the current season day is in this row,
 			#set the value of the date key to the number of hits
 			if stats2.cell_value(row, 12) > 0:
