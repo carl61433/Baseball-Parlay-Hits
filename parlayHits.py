@@ -29,7 +29,7 @@ def playerIteration(date):
 	dateDictionary.update({date:['','']}) #Add the key to the dictionary,
 		#with a blank list as the value
 	row = 1 #Skip the header, row 0
-	while row < 163: #Iterate the rows and columns
+	while row < 155: #Iterate the rows and columns
 		if date == stats1.cell_value(row, 3): #If the current season day is in this row,
 			#set the value of the date key to the number of hits
 			if stats1.cell_value(row, 12) > 0:
@@ -41,7 +41,7 @@ def playerIteration(date):
 			dateDictionary[date][0] = "NG"
 		row = row + 1
 	row = 1 #Reset row for second loop. Skip the header, row 0
-	while row < 163:
+	while row < 158:
 		if date == stats2.cell_value(row, 3): #If the current season day is in this row,
 			#set the value of the date key to the number of hits
 			if stats2.cell_value(row, 12) > 0:
