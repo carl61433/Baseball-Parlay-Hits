@@ -7,18 +7,13 @@ import datetime
 os.chdir('Players/')
 # Import all file names in the Workbooks dir
 allFiles = [f for f in os.listdir('.') if os.path.isfile(f)] #Only get files, not folders
-#print(allFiles)
 playerDictionary = {} #Dictionary to associate player names with their stats
-# Open the Workbooks
-player1 = xlrd.open_workbook(allFiles[0])
-player2 = xlrd.open_workbook(allFiles[1])
-stats1 = player1.sheet_by_index(0) #Open the worksheet
-stats2 = player2.sheet_by_index(0) #Open the worksheet
 
 def playerInit(): #Create the dictionary of players, with filename as key and the worksheet as the value
 	for i in allFiles:
 		workbook = xlrd.open_workbook(i)
-		playerDictionary.update({i:workbook.sheet_by_index(0)})
+		stats = workbook.sheet_by_index(0)
+		playerDictionary.update({i:stats})
 	populateDict()
 
 def populateDict():
@@ -30,40 +25,32 @@ def populateDict():
 		#player iteration for checking hits, if there was a game
 		seasonDay += datetime.timedelta(days=1) #Next day
 	numberOfDays(dateDictionary)
+	#print(dateDictionary)
 
 def playerIteration(date, dateDictionary):
 	date = date.strftime("%b %-d") #Modifies the date to XXX ## format used in the data
-	dateDictionary.update({date:['','']}) #Add the key to the dictionary,
+	dateDictionary.update({date:[]}) #Add the date as a  key to the dictionary,
 		#with a blank list as the value
-	row = 1 #Skip the header, row 0
-	while row < 155: #Iterate the rows and columns
-		if date == stats1.cell_value(row, 3): #If the current season day is in this row,
-			#set the value of the date key to the number of hits
-			if stats1.cell_value(row, 12) > 0:
-				dateDictionary[date][0] = "yes"
-			else:
-				dateDictionary[date][0] = "no"
-			break
-		else:
-			dateDictionary[date][0] = "NG"
-		row = row + 1
-	row = 1 #Reset row for second loop. Skip the header, row 0
-	while row < 158:
-		if date == stats2.cell_value(row, 3): #If the current season day is in this row,
-			#set the value of the date key to the number of hits
-			if stats2.cell_value(row, 12) > 0:
-				dateDictionary[date][1] = "yes"
-			else:
-				dateDictionary[date][1] = "no"
-			break
-		else:
-			dateDictionary[date][1] = "NG"
-		row = row + 1
+	for player in playerDictionary:
+		row = 0
+		while row < playerDictionary[player].nrows - 1:
+			gameCheckCounter = 0 #Essentially a boolean to check if an entry was made for that date
+			if date == playerDictionary[player].cell_value(row, 3): #If the current season day is in this row,
+				#set the value of the date key to the number of hits
+				if playerDictionary[player].cell_value(row, 12) > 0:
+					dateDictionary[date].append("yes")
+				else:
+					dateDictionary[date].append("no")
+				gameCheckCounter = 1
+				break
+			row += 1
+		if gameCheckCounter == 0:
+			dateDictionary[date].append("NG")
 
 def numberOfDays(dateDictionary): #The number of times that this occurred in the season.
 	counter = 0
 	for i in dateDictionary:
-		if dateDictionary[i][0] == "yes" and dateDictionary[i][1] == "yes":
+		if len(set(dateDictionary[i])) == 1:
 			counter = counter + 1
 	print("These players have hit on the same day " + str(counter) + " times this season.")
 	#stuff
