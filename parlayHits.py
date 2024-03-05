@@ -54,7 +54,6 @@ def numberOfDays(dateDictionary): #The number of times that this occurred in the
 		if len(set(dateDictionary[i])) == 1 and dateDictionary[i][0] == "yes":
 			counter = counter + 1
 	print("These players have hit on the same day " + str(counter) + " times this season.")
-	#stuff
 
 if __name__=="__main__":
 	playerInit()

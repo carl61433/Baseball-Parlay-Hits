@@ -10,6 +10,9 @@ os.chdir('Players/')
 # Import all file names in the Workbooks dir
 allFiles = [f for f in os.listdir('.') if os.path.isfile(f)] #Only get files, not folders
 playerDictionary = {} #Dictionary to associate player names with their stats
+playerCompare = {} #Dictionary to keep track of current player comparisons
+#Example: {'acuna':[12,3,5,2]}. Assuming we always read files in order, 
+#I will keep assuming the order that they go into the respective lists. 
 
 def playerInit(): #Create the dictionary of players, with filename as key and the worksheet as the value
 	for i in allFiles:
@@ -53,6 +56,8 @@ def playerIteration(date, dateDictionary):
 def numberOfDays(dateDictionary): #The number of times that this occurred in the season.
 	counter = 0
 	for i in dateDictionary:
+		for k in playerCompare:
+			print('')
 		if len(set(dateDictionary[i])) == 1 and dateDictionary[i][0] == "yes":
 			counter = counter + 1
 	print("These players have hit on the same day " + str(counter) + " times this season.")
