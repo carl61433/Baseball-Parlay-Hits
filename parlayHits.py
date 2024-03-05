@@ -1,3 +1,4 @@
+#Compares players to see how many times in a season they each got a hit on the same day.
 import xlrd #Import the xlrd module
 import os
 import datetime
