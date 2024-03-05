@@ -50,7 +50,7 @@ def playerIteration(date, dateDictionary):
 def numberOfDays(dateDictionary): #The number of times that this occurred in the season.
 	counter = 0
 	for i in dateDictionary:
-		if len(set(dateDictionary[i])) == 1:
+		if len(set(dateDictionary[i])) == 1 and dateDictionary[i][0] == "yes":
 			counter = counter + 1
 	print("These players have hit on the same day " + str(counter) + " times this season.")
 	#stuff
