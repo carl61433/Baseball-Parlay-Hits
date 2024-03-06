@@ -10,9 +10,7 @@ os.chdir('Players/')
 # Import all file names in the Workbooks dir
 allFiles = [f for f in os.listdir('.') if os.path.isfile(f)] #Only get files, not folders
 playerDictionary = {} #Dictionary to associate player names with their stats
-playerCompare = {} #Dictionary to keep track of current player comparisons
-#Example: {'acuna':[12,3,5,2]}. Assuming we always read files in order, 
-#I will keep assuming the order that they go into the respective lists. 
+playerDatesAndHits = {} #Dictionary to keep track of player results, using nested dictionaries
 
 def playerInit(): #Create the dictionary of players, with filename as key and the worksheet as the value
 	for i in allFiles:
@@ -20,23 +18,20 @@ def playerInit(): #Create the dictionary of players, with filename as key and th
 		workbook = xlrd.open_workbook(i)
 		stats = workbook.sheet_by_index(0)
 		playerDictionary.update({playerName:stats})
+		playerDatesAndHits[playerName] = {}
 	populateDateDict()
 
 def populateDateDict():
-	dateDictionary = {} #Dictionary to track hits per day
 	seasonDay = datetime.date(2023, 3, 30) #Current day of the season
 	seasonEnd = datetime.date(2023, 9, 28) #Last day of the season
 	while seasonDay <= seasonEnd:
-		playerIteration(seasonDay, dateDictionary) #Pass the current date to
+		playerIteration(seasonDay) #Pass the current date to
 		#player iteration for checking hits, if there was a game
 		seasonDay += datetime.timedelta(days=1) #Next day
-	numberOfDays(dateDictionary)
-	#print(dateDictionary)
+	numberOfDays()
 
-def playerIteration(date, dateDictionary):
+def playerIteration(date):
 	date = date.strftime("%b %-d") #Modifies the date to XXX ## format used in the data
-	dateDictionary.update({date:[]}) #Add the date as a  key to the dictionary,
-		#with a blank list as the value
 	for player in playerDictionary:
 		row = 0
 		while row < playerDictionary[player].nrows - 1:
@@ -44,24 +39,45 @@ def playerIteration(date, dateDictionary):
 			if date == playerDictionary[player].cell_value(row, 3): #If the current season day is in this row,
 				#set the value of the date key to the number of hits
 				if playerDictionary[player].cell_value(row, 12) > 0:
-					dateDictionary[date].append("yes")
+					playerDatesAndHits[player].update({date:"yes"})
 				else:
-					dateDictionary[date].append("no")
+					playerDatesAndHits[player].update({date:"no"})
 				gameCheckCounter = 1
 				break
 			row += 1
 		if gameCheckCounter == 0:
-			dateDictionary[date].append("NG")
+			playerDatesAndHits[player].update({date:"NG"})
 
-def numberOfDays(dateDictionary): #The number of times that this occurred in the season.
-	counter = 0
-	for i in dateDictionary:
-		for k in playerCompare:
-			print('')
-		if len(set(dateDictionary[i])) == 1 and dateDictionary[i][0] == "yes":
-			counter = counter + 1
-	print("These players have hit on the same day " + str(counter) + " times this season.")
-	#stuff
+def numberOfDays(): #The number of times that this occurred in the season.
+	playerCompare = {}
+	for i in playerDatesAndHits:
+		playerCompare.update({i:[]})
+		for j in playerDatesAndHits:
+			counter = 0
+			if j == i:
+				playerCompare[i].append("x")
+				break
+			seasonDay = datetime.date(2023, 3, 30) #Current day of the season
+			seasonEnd = datetime.date(2023, 9, 28) #Last day of the season
+			while seasonDay <= seasonEnd:
+				date = seasonDay.strftime("%b %-d")
+				if playerDatesAndHits[i][date] == "yes" and playerDatesAndHits[j][date] == "yes":
+					counter = counter + 1
+				seasonDay += datetime.timedelta(days=1) #Next day
+			playerCompare[i].append(counter)
+	os.chdir('..')
+	with open('By2s.csv', 'w', newline='') as file:
+		playerList = []
+		writer = csv.writer(file)
+		topRow = ['NAME:']
+		topRow += list(playerCompare.keys())
+		writer.writerow(topRow)
+		for player in playerCompare:
+			playerList = []
+			playerList.append(player)
+			for x in range(len(playerCompare[player])):
+				playerList.append(playerCompare[player][x])
+			writer.writerow(playerList)
 
 if __name__=="__main__":
 	playerInit()
