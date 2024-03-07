@@ -2,4 +2,4 @@
 
 'By 2s Comparison.py' looks at all players in the directory, and prints out the number of occurrences with one other player.
 
-![image](https://github.com/carl61433/Baseball-Parlay-Hits/assets/4512134/0babd49b-4f71-492b-8438-57b755b47604)
+![image](https://github.com/carl61433/Baseball-Parlay-Hits/assets/4512134/238ba01a-ab50-4cc6-a89c-f023f042db8e)
