@@ -76,7 +76,7 @@ def numberOfDays(): #The number of times that this occurred in the season.
 				if playerCompare[i][item] == "x":
 					break
 				else:
-					playerCompare[i][item] = 0
+					playerCompare[i][item] = ''
 	os.chdir('..')
 	with open('By2s.csv', 'w', newline='') as file:
 		playerList = []
