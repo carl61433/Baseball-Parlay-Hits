@@ -1,8 +1,8 @@
-NAME:,albies,freeman,acuna,semien,seager,betts,devers
-albies,x
-freeman,68,x
-acuna,73,76,x
-semien,59,80,73,x
-seager,46,56,59,62,x
-betts,55,81,65,71,56,x
-devers,54,62,56,60,40,57,x
+NAME:,albies,freeman,acuna,semien,seager,betts,devers,# Days
+albies,x,68,73,59,46,55,54,92
+freeman,0,x,76,80,56,81,62,115
+acuna,0,0,x,73,59,65,56,113
+semien,0,0,0,x,62,71,60,115
+seager,0,0,0,0,x,56,40,88
+betts,0,0,0,0,0,x,57,109
+devers,0,0,0,0,0,0,x,90
